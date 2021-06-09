@@ -33,8 +33,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		9171E46426026F4D00405F6F /* Bowling */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Bowling; sourceTree = BUILT_PRODUCTS_DIR; };
-		9171E47D2602743900405F6F /* Bowling.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Bowling.entitlements; sourceTree = "<group>"; };
+		9171E46426026F4D00405F6F /* FireSmokeProject */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = FireSmokeProject; sourceTree = BUILT_PRODUCTS_DIR; };
+		9171E47D2602743900405F6F /* FireSmokeProject.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = FireSmokeProject.entitlements; sourceTree = "<group>"; };
 		91ADDDC22603F0A100ED2BAE /* vshader.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = vshader.glsl; sourceTree = "<group>"; };
 		91ADDDC32603F0A100ED2BAE /* fshader.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = fshader.glsl; sourceTree = "<group>"; };
 		91ADDDE12603F61F00ED2BAE /* Angel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Angel.h; sourceTree = "<group>"; };
@@ -63,7 +63,7 @@
 		9171E45B26026F4D00405F6F = {
 			isa = PBXGroup;
 			children = (
-				9171E46626026F4D00405F6F /* Bowling */,
+				9171E46626026F4D00405F6F /* FireSmokeProject */,
 				9171E46526026F4D00405F6F /* Products */,
 				91EF07BE2602766500A03DAC /* Frameworks */,
 			);
@@ -72,12 +72,12 @@
 		9171E46526026F4D00405F6F /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				9171E46426026F4D00405F6F /* Bowling */,
+				9171E46426026F4D00405F6F /* FireSmokeProject */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		9171E46626026F4D00405F6F /* Bowling */ = {
+		9171E46626026F4D00405F6F /* FireSmokeProject */ = {
 			isa = PBXGroup;
 			children = (
 				91ADDDC32603F0A100ED2BAE /* fshader.glsl */,
@@ -88,9 +88,9 @@
 				91ADDDFE260779A900ED2BAE /* main.cpp */,
 				91ADDDE42603F7FE00ED2BAE /* vec.h */,
 				91ADDDE12603F61F00ED2BAE /* Angel.h */,
-				9171E47D2602743900405F6F /* Bowling.entitlements */,
+				9171E47D2602743900405F6F /* FireSmokeProject.entitlements */,
 			);
-			path = Bowling;
+			path = FireSmokeProject;
 			sourceTree = "<group>";
 		};
 		91EF07BE2602766500A03DAC /* Frameworks */ = {
@@ -105,9 +105,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		9171E46326026F4D00405F6F /* Bowling */ = {
+		9171E46326026F4D00405F6F /* FireSmokeProject */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 9171E46B26026F4D00405F6F /* Build configuration list for PBXNativeTarget "Bowling" */;
+			buildConfigurationList = 9171E46B26026F4D00405F6F /* Build configuration list for PBXNativeTarget "FireSmokeProject" */;
 			buildPhases = (
 				9171E46026026F4D00405F6F /* Sources */,
 				9171E46126026F4D00405F6F /* Frameworks */,
@@ -118,9 +118,9 @@
 			);
 			dependencies = (
 			);
-			name = Bowling;
+			name = FireSmokeProject;
 			productName = Assignment1;
-			productReference = 9171E46426026F4D00405F6F /* Bowling */;
+			productReference = 9171E46426026F4D00405F6F /* FireSmokeProject */;
 			productType = "com.apple.product-type.tool";
 		};
 /* End PBXNativeTarget section */
@@ -136,7 +136,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 9171E45F26026F4D00405F6F /* Build configuration list for PBXProject "Bowling" */;
+			buildConfigurationList = 9171E45F26026F4D00405F6F /* Build configuration list for PBXProject "FireSmokeProject" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -149,7 +149,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				9171E46326026F4D00405F6F /* Bowling */,
+				9171E46326026F4D00405F6F /* FireSmokeProject */,
 			);
 		};
 /* End PBXProject section */
@@ -293,7 +293,7 @@
 		9171E46C26026F4D00405F6F /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_ENTITLEMENTS = Bowling/Bowling.entitlements;
+				CODE_SIGN_ENTITLEMENTS = FireSmokeProject/FireSmokeProject.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = HJ9V3YK2DV;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -308,7 +308,7 @@
 		9171E46D26026F4D00405F6F /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_ENTITLEMENTS = Bowling/Bowling.entitlements;
+				CODE_SIGN_ENTITLEMENTS = FireSmokeProject/FireSmokeProject.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = HJ9V3YK2DV;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -323,7 +323,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		9171E45F26026F4D00405F6F /* Build configuration list for PBXProject "Bowling" */ = {
+		9171E45F26026F4D00405F6F /* Build configuration list for PBXProject "FireSmokeProject" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				9171E46926026F4D00405F6F /* Debug */,
@@ -332,7 +332,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		9171E46B26026F4D00405F6F /* Build configuration list for PBXNativeTarget "Bowling" */ = {
+		9171E46B26026F4D00405F6F /* Build configuration list for PBXNativeTarget "FireSmokeProject" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				9171E46C26026F4D00405F6F /* Debug */,
