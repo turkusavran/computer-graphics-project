@@ -285,22 +285,9 @@ void reshape(int width, int height)
 {
 	glViewport(0, 0, width, height);
 
-	GLfloat left = -2.0, right = 2.0;
-	GLfloat top = 2.0, bottom = -2.0;
-	GLfloat zNear = -20.0, zFar = 20.0;
-
 	GLfloat aspect = GLfloat(width) / height;
+	mat4  projection = Perspective(45.0, aspect, 0.5, 6.0);
 
-	if (aspect > 1.0) {
-		left *= aspect;
-		right *= aspect;
-	}
-	else {
-		top /= aspect;
-		bottom /= aspect;
-	}
-
-	mat4 projection = Ortho(left, right, bottom, top, zNear, zFar);
 	glUniformMatrix4fv(Projection, 1, GL_TRUE, projection);
 
 }
