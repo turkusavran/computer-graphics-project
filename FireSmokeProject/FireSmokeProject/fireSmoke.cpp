@@ -77,8 +77,6 @@ particles particle[MAX_PARTICLES];    // Particle Array (Room For Particle Info)
 
 void LoadTexture( const char * filename )
 {
-    GLuint texture;
-    int width, height;
     unsigned char * data;
 
     FILE * file;
@@ -102,50 +100,6 @@ void LoadTexture( const char * filename )
     data[index+2] = B;
     }
     texData = data;
-}
-
-unsigned char* readBMP(const char* filename)
-{
-    GLuint texture;
-    int width, height;
-    unsigned char header[54];
-    unsigned imageSize;
-    unsigned int dataPos;
-    unsigned char* data;
-    FILE* file;
-    file = fopen(filename, "rb");
-
-    if (file == NULL) {
-        return 0;
-    }
-
-    if (fread(header, 1, 54, file) != 54) {
-        printf("Not a BMP file!\n");
-    }
-    printf("SDAFADSFADS3\n");
-    dataPos = (int)(size_t)&(header[0x0A]);
-    imageSize = (int)(size_t)&(header[0x22]);
-    width = (int)(size_t)&(header[0x12]);
-    height = (int)(size_t)&(header[0x16]);
-
-    if (imageSize == 0)    imageSize = width * height * 3; // 3 : one byte for each Red, Green and Blue component
-    if (dataPos == 0)      dataPos = 54;
-
-    data = (unsigned char*)malloc(width * height * 3);
-    //int size = fseek(file,);
-    if (header[0] != 'B' || header[1] != 'M') {
-        printf("Not a correct BMP file\n");
-        return 0;
-    }
-
-    data = new unsigned char[imageSize];
-    fread(data, 1, imageSize, file);
-    fclose(file);
-    textureHeight = height;
-    textureWidth = width;
-    texData = data;
-    return data;
-
 }
 
 int LoadGLTextures()                             // Load Bitmap And Convert To A Texture
