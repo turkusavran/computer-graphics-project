@@ -75,25 +75,24 @@ particles;                            // Particles Structure
 
 particles particle[MAX_PARTICLES];    // Particle Array (Room For Particle Info)
 
-GLuint LoadTexture( const char * filename )
+void LoadTexture( const char * filename )
 {
-  GLuint texture;
-  int width, height;
-  unsigned char * data;
+    GLuint texture;
+    int width, height;
+    unsigned char * data;
 
-  FILE * file;
-  file = fopen( filename, "rb" );
+    FILE * file;
+    file = fopen( filename, "rb" );
+    
+    textureWidth = 32;
+    textureHeight = 32;
+    data = (unsigned char *)malloc( textureWidth * textureHeight * 3 );
+    //int size = fseek(file,);
+    fread( data, textureWidth * textureHeight * 3, 1, file );
+    fclose( file );
 
-  if ( file == NULL ) return 0;
-  width = 1024;
-  height = 512;
-  data = (unsigned char *)malloc( width * height * 3 );
-  //int size = fseek(file,);
-  fread( data, width * height * 3, 1, file );
-  fclose( file );
-
-  for(int i = 0; i < width * height ; ++i)
-  {
+    for(int i = 0; i < textureWidth * textureWidth ; ++i)
+    {
     int index = i*3;
     unsigned char B,R;
     B = data[index];
@@ -101,20 +100,8 @@ GLuint LoadTexture( const char * filename )
 
     data[index] = R;
     data[index+2] = B;
-  }
-
-  glGenTextures( 1, &texture );
-  glBindTexture( GL_TEXTURE_2D, texture );
-  glTexEnvf( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE,GL_MODULATE );
-  glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER,GL_LINEAR_MIPMAP_NEAREST );
-
-  glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER,GL_LINEAR );
-  glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S,GL_REPEAT );
-  glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T,GL_REPEAT );
-  gluBuild2DMipmaps( GL_TEXTURE_2D, 3, width, height,GL_RGB, GL_UNSIGNED_BYTE, data );
-  free( data );
-
-  return texture;
+    }
+    texData = data;
 }
 
 unsigned char* readBMP(const char* filename)
@@ -125,16 +112,17 @@ unsigned char* readBMP(const char* filename)
     unsigned imageSize;
     unsigned int dataPos;
     unsigned char* data;
-
     FILE* file;
     file = fopen(filename, "rb");
 
-    if (file == NULL) return 0;
+    if (file == NULL) {
+        return 0;
+    }
 
     if (fread(header, 1, 54, file) != 54) {
         printf("Not a BMP file!\n");
     }
-
+    printf("SDAFADSFADS3\n");
     dataPos = (int)(size_t)&(header[0x0A]);
     imageSize = (int)(size_t)&(header[0x22]);
     width = (int)(size_t)&(header[0x12]);
@@ -142,7 +130,6 @@ unsigned char* readBMP(const char* filename)
 
     if (imageSize == 0)    imageSize = width * height * 3; // 3 : one byte for each Red, Green and Blue component
     if (dataPos == 0)      dataPos = 54;
-
 
     data = (unsigned char*)malloc(width * height * 3);
     //int size = fseek(file,);
@@ -161,23 +148,21 @@ unsigned char* readBMP(const char* filename)
 
 }
 
-int LoadGLTextures()                            // Load Bitmap And Convert To A Texture
+int LoadGLTextures()                             // Load Bitmap And Convert To A Texture
 {
-        int Status = false;                                // Status Indicator
-       // GLuint TextureImage[1];                // Create Storage Space For The Textures
-        //memset(TextureImage,0,sizeof(void *)*1);        // Set The Pointer To NULL
+    int Status = false;                           // Status Indicator
+   LoadTexture("/Users/turku/Desktop/GRAPHICS/computer-graphics-project/FireSmokeProject/FireSmokeProject/Particle.bmp");                   // Load Particle Texture
+    printf("%dALOHHAA",textureWidth);
+    glGenTextures(1, &texture[0]);                // Create One Texture
+
+    glBindTexture(GL_TEXTURE_2D, texture[0]);
+    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
+    glTexImage2D(GL_TEXTURE_2D, 0, 3, textureWidth, textureHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, texData);
     
-    if (readBMP("Data/Particle.bmp"))    // Load Particle Texture
-    {
-        Status = true;                                // Set The Status To TRUE
-        glGenTextures(1, &texture[0]);                // Create One Texture
-
-        glBindTexture(GL_TEXTURE_2D, texture[0]);
-        glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
-        glTexImage2D(GL_TEXTURE_2D, 0, 3, textureWidth, textureHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, texData);
+    if(textureWidth != 0){
+        Status = true;
     }
-
     return Status;                                    // Return The Status
 }
 
@@ -274,7 +259,7 @@ void DrawGLScene()                                        // Here's Where We Do 
                 glTexCoord2d(0,1); glVertex3f(x-0.5f,y+0.5f,z); // Top Left
                 glTexCoord2d(1,0); glVertex3f(x+0.5f,y-0.5f,z); // Bottom Right
                 glTexCoord2d(0,0); glVertex3f(x-0.5f,y-0.5f,z); // Bottom Left
-            glEnd();                                        // Done Building Triangle Strip
+            glEnd();                                       // Done Building Triangle Strip
 
             particle[loop].x+=particle[loop].xi/(750);// Move On The X Axis By X Speed
             particle[loop].y+=particle[loop].yi/(1000);// Move On The Y Axis By Y Speed

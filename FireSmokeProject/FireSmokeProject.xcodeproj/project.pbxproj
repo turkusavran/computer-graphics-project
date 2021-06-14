@@ -36,6 +36,7 @@
 		9104D660267685D1002AC3BB /* fireSmoke.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = fireSmoke.cpp; sourceTree = "<group>"; };
 		9104D6672676864D002AC3BB /* Data */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Data; sourceTree = "<group>"; };
 		9104D67B2676A874002AC3BB /* define.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = define.h; sourceTree = "<group>"; };
+		9104D6872676E4B7002AC3BB /* Particle.bmp */ = {isa = PBXFileReference; lastKnownFileType = image.bmp; path = Particle.bmp; sourceTree = "<group>"; };
 		9171E46426026F4D00405F6F /* FireSmokeProject */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = FireSmokeProject; sourceTree = BUILT_PRODUCTS_DIR; };
 		9171E47D2602743900405F6F /* FireSmokeProject.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = FireSmokeProject.entitlements; sourceTree = "<group>"; };
 		91ADDDC22603F0A100ED2BAE /* vshader.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = vshader.glsl; sourceTree = "<group>"; };
@@ -86,6 +87,7 @@
 				91ADDDC32603F0A100ED2BAE /* fshader.glsl */,
 				91ADDDC22603F0A100ED2BAE /* vshader.glsl */,
 				91ADDDE32603F7FE00ED2BAE /* mat.h */,
+				9104D6872676E4B7002AC3BB /* Particle.bmp */,
 				91ADDDF12603FBF700ED2BAE /* bunny.off */,
 				91ADDDFF260779A900ED2BAE /* InitShader.cpp */,
 				91ADDDE42603F7FE00ED2BAE /* vec.h */,
