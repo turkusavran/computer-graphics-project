@@ -49,10 +49,10 @@
     <Image Include="fire.bmp">
       <Filter>Source Files</Filter>
     </Image>
-    <Image Include="smoke.bmp">
+    <Image Include="particle.bmp">
       <Filter>Source Files</Filter>
     </Image>
-    <Image Include="particle.bmp">
+    <Image Include="smoke.bmp">
       <Filter>Source Files</Filter>
     </Image>
   </ItemGroup>

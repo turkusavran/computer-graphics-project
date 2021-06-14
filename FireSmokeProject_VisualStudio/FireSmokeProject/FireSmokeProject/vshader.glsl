@@ -14,7 +14,5 @@ void main()
 {
     // Transform vertex position into camera (eye) coordinates
     vec3 pos = (ModelView * vPosition).xyz;
-
-    // texCoord = vTexCoord;
     gl_Position = Projection * ModelView * vPosition;
 }
