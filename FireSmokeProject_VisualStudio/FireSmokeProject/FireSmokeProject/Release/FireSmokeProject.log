@@ -15,8 +15,8 @@ D:\Koc University\Spring 2021\COMP 410\computer-graphics-project\FireSmokeProjec
 D:\Koc University\Spring 2021\COMP 410\computer-graphics-project\FireSmokeProject_VisualStudio\FireSmokeProject\FireSmokeProject\main.cpp(161,30): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
 D:\Koc University\Spring 2021\COMP 410\computer-graphics-project\FireSmokeProject_VisualStudio\FireSmokeProject\FireSmokeProject\main.cpp(162,33): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
   Generating code
-  3 of 27 functions (11.1%) were compiled, the rest were copied from previous compilation.
+  1 of 27 functions ( 3.7%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
-    0 functions had inline decision re-evaluated but remain unchanged
+    1 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
   FireSmokeProject.vcxproj -> D:\Koc University\Spring 2021\COMP 410\computer-graphics-project\FireSmokeProject_VisualStudio\FireSmokeProject\Release\FireSmokeProject.exe

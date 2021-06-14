@@ -299,7 +299,7 @@ void drawFireParticle() {
                 particle[loop].y = posY;
                 particle[loop].z = posZ;
                 particle[loop].xi = xspeed + float((rand() % 60) - 30.0f);
-                particle[loop].yi = yspeed + float((rand() % 40) - 20.0f);
+                particle[loop].yi = yspeed + float((rand() % 60) - 30.0f);
                 particle[loop].zi = float((rand() % 60) - 30.0f);
                 particle[loop].r = vertex_colors[9][0];
                 particle[loop].g = vertex_colors[9][1];
@@ -380,7 +380,7 @@ void drawSmokeParticle() {
                 particle[loop].y = posY;
                 particle[loop].z = posZ;
                 particle[loop].xi = xspeed + float((rand() % 60) - 30.0f);
-                particle[loop].yi = yspeed + float((rand() % 60) - 30.0f);
+                particle[loop].yi = yspeed + float((rand() % 20) - 10.0f);
                 particle[loop].zi = float((rand() % 60) - 30.0f);
 
                 // Dim-Grey
@@ -392,7 +392,7 @@ void drawSmokeParticle() {
             {
                 // Light Grey
                 particle[loop].r = vertex_colors[15][0];
-                particle[loop].r = vertex_colors[15][1];
+                particle[loop].g = vertex_colors[15][1];
                 particle[loop].b = vertex_colors[15][2];
             }
             else if (particle[loop].life < 0.6f)
