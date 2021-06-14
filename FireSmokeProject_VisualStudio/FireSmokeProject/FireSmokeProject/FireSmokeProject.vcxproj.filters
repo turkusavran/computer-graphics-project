@@ -41,5 +41,19 @@
     <ClInclude Include="vec.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="define.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="fire.bmp">
+      <Filter>Source Files</Filter>
+    </Image>
+    <Image Include="smoke.bmp">
+      <Filter>Source Files</Filter>
+    </Image>
+    <Image Include="particle.bmp">
+      <Filter>Source Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

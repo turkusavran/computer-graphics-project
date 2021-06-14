@@ -1,0 +1,10 @@
+﻿  main.cpp
+D:\Koc University\Spring 2021\COMP 410\computer-graphics-project\FireSmokeProject_VisualStudio\FireSmokeProject\FireSmokeProject\Angel.h(63,47): warning C4305: 'initializing': truncation from 'double' to 'GLfloat'
+D:\Koc University\Spring 2021\COMP 410\computer-graphics-project\FireSmokeProject_VisualStudio\FireSmokeProject\FireSmokeProject\mat.h(707,18): warning C4244: '=': conversion from 'double' to 'GLfloat', possible loss of data
+D:\Koc University\Spring 2021\COMP 410\computer-graphics-project\FireSmokeProject_VisualStudio\FireSmokeProject\FireSmokeProject\mat.h(708,18): warning C4244: '=': conversion from 'double' to 'GLfloat', possible loss of data
+D:\Koc University\Spring 2021\COMP 410\computer-graphics-project\FireSmokeProject_VisualStudio\FireSmokeProject\FireSmokeProject\mat.h(709,18): warning C4244: '=': conversion from 'double' to 'GLfloat', possible loss of data
+D:\Koc University\Spring 2021\COMP 410\computer-graphics-project\FireSmokeProject_VisualStudio\FireSmokeProject\FireSmokeProject\mat.h(730,24): warning C4244: '=': conversion from 'double' to 'GLfloat', possible loss of data
+D:\Koc University\Spring 2021\COMP 410\computer-graphics-project\FireSmokeProject_VisualStudio\FireSmokeProject\FireSmokeProject\mat.h(732,24): warning C4244: '=': conversion from 'double' to 'GLfloat', possible loss of data
+D:\Koc University\Spring 2021\COMP 410\computer-graphics-project\FireSmokeProject_VisualStudio\FireSmokeProject\FireSmokeProject\mat.h(735,30): warning C4244: '=': conversion from 'double' to 'GLfloat', possible loss of data
+D:\Koc University\Spring 2021\COMP 410\computer-graphics-project\FireSmokeProject_VisualStudio\FireSmokeProject\FireSmokeProject\mat.h(752,30): warning C4244: '=': conversion from 'double' to 'GLfloat', possible loss of data
+  FireSmokeProject.vcxproj -> D:\Koc University\Spring 2021\COMP 410\computer-graphics-project\FireSmokeProject_VisualStudio\FireSmokeProject\Debug\FireSmokeProject.exe
