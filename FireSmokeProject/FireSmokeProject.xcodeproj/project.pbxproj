@@ -7,11 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9104D662267685D1002AC3BB /* fireSmoke.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9104D660267685D1002AC3BB /* fireSmoke.cpp */; };
+		9104D6682676864D002AC3BB /* Data in Resources */ = {isa = PBXBuildFile; fileRef = 9104D6672676864D002AC3BB /* Data */; };
 		91ADDDD52603F2B000ED2BAE /* fshader.glsl in CopyFiles */ = {isa = PBXBuildFile; fileRef = 91ADDDC32603F0A100ED2BAE /* fshader.glsl */; };
 		91ADDDD62603F2B000ED2BAE /* vshader.glsl in CopyFiles */ = {isa = PBXBuildFile; fileRef = 91ADDDC22603F0A100ED2BAE /* vshader.glsl */; };
-		91ADDDF22603FBF700ED2BAE /* bunny.off in Resources */ = {isa = PBXBuildFile; fileRef = 91ADDDF12603FBF700ED2BAE /* bunny.off */; };
 		91ADDDF42603FC0500ED2BAE /* bunny.off in CopyFiles */ = {isa = PBXBuildFile; fileRef = 91ADDDF12603FBF700ED2BAE /* bunny.off */; };
-		91ADDE00260779A900ED2BAE /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 91ADDDFE260779A900ED2BAE /* main.cpp */; };
 		91ADDE01260779A900ED2BAE /* InitShader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 91ADDDFF260779A900ED2BAE /* InitShader.cpp */; };
 		91EF07C02602766500A03DAC /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 91EF07BF2602766500A03DAC /* GLUT.framework */; settings = {ATTRIBUTES = (Required, ); }; };
 		91EF07C22602766A00A03DAC /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 91EF07C12602766A00A03DAC /* OpenGL.framework */; };
@@ -33,6 +33,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		9104D660267685D1002AC3BB /* fireSmoke.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = fireSmoke.cpp; sourceTree = "<group>"; };
+		9104D6672676864D002AC3BB /* Data */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Data; sourceTree = "<group>"; };
+		9104D67B2676A874002AC3BB /* define.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = define.h; sourceTree = "<group>"; };
 		9171E46426026F4D00405F6F /* FireSmokeProject */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = FireSmokeProject; sourceTree = BUILT_PRODUCTS_DIR; };
 		9171E47D2602743900405F6F /* FireSmokeProject.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = FireSmokeProject.entitlements; sourceTree = "<group>"; };
 		91ADDDC22603F0A100ED2BAE /* vshader.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = vshader.glsl; sourceTree = "<group>"; };
@@ -41,7 +44,6 @@
 		91ADDDE32603F7FE00ED2BAE /* mat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mat.h; sourceTree = "<group>"; };
 		91ADDDE42603F7FE00ED2BAE /* vec.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = vec.h; sourceTree = "<group>"; };
 		91ADDDF12603FBF700ED2BAE /* bunny.off */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = bunny.off; sourceTree = "<group>"; };
-		91ADDDFE260779A900ED2BAE /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		91ADDDFF260779A900ED2BAE /* InitShader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = InitShader.cpp; sourceTree = "<group>"; };
 		91EF07BF2602766500A03DAC /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = System/Library/Frameworks/GLUT.framework; sourceTree = SDKROOT; };
 		91EF07C12602766A00A03DAC /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
@@ -80,15 +82,17 @@
 		9171E46626026F4D00405F6F /* FireSmokeProject */ = {
 			isa = PBXGroup;
 			children = (
+				9104D6672676864D002AC3BB /* Data */,
 				91ADDDC32603F0A100ED2BAE /* fshader.glsl */,
 				91ADDDC22603F0A100ED2BAE /* vshader.glsl */,
 				91ADDDE32603F7FE00ED2BAE /* mat.h */,
 				91ADDDF12603FBF700ED2BAE /* bunny.off */,
 				91ADDDFF260779A900ED2BAE /* InitShader.cpp */,
-				91ADDDFE260779A900ED2BAE /* main.cpp */,
 				91ADDDE42603F7FE00ED2BAE /* vec.h */,
 				91ADDDE12603F61F00ED2BAE /* Angel.h */,
+				9104D67B2676A874002AC3BB /* define.h */,
 				9171E47D2602743900405F6F /* FireSmokeProject.entitlements */,
+				9104D660267685D1002AC3BB /* fireSmoke.cpp */,
 			);
 			path = FireSmokeProject;
 			sourceTree = "<group>";
@@ -159,7 +163,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				91ADDDF22603FBF700ED2BAE /* bunny.off in Resources */,
+				9104D6682676864D002AC3BB /* Data in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -171,7 +175,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				91ADDE01260779A900ED2BAE /* InitShader.cpp in Sources */,
-				91ADDE00260779A900ED2BAE /* main.cpp in Sources */,
+				9104D662267685D1002AC3BB /* fireSmoke.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

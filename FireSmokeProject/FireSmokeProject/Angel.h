@@ -33,6 +33,7 @@
 #ifdef __APPLE__  // include Mac OS X verions of headers
 #  include <OpenGL/gl3.h>
 #  include <OpenGL/gl3ext.h>
+#  include <OpengL/gl.h>
 #  define __gl_h_ // don't include gl.h: https://stackoverflow.com/a/24098402
 #  include <GLUT/glut.h>
 #  include <OpenGL/OpenGL.h>
