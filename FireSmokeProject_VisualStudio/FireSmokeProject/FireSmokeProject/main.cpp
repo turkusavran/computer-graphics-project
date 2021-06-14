@@ -8,27 +8,83 @@
 
 using namespace std;
 
-#define	MAX_PARTICLES	10000		// Number Of Particles To Create
+//----------------------------------------------------------------------------
+
+/*
+*	GLOBAL
+*/
+
+// Adjusting the window width and height
+#define WINDOW_WIDTH 1000
+#define WINDOW_HEIGHT 800
+#define	MAX_PARTICLES 10000		// Number Of Particles To Create
+
+// TypeDef
+typedef vec3 point3;
+typedef vec4 point4;
+typedef vec4 color4;
+
+// Initialize shader lighting parameters
+point4 light_position(-1.0, 0.0, 0.0, 1.0);
+color4 light_ambient(0.2, 0.2, 0.2, 1.0);		// L_a
+color4 light_diffuse(1.0, 1.0, 1.0, 1.0);		// L_d
+color4 light_specular(1.0, 1.0, 1.0, 1.0);		// L_s
+
+// Texture objects and storage for texture image
+GLuint textures[2];		// Two textures will be stored: fire & smoke
+GLubyte* image;
+vec3 texture_coordinates;
+int fireParticleWidth, fireParticleHeight;
+int smokeParticleWidth, smokeParticleHeight;
+
+point4 points[6];
+vec3 normals[2];
+
+int textureType = 0;	// 0: For Fire, 1: For Smoke
+
+
 
 GLuint g_mainWnd;
-
-int windowWidth = 800, windowHeight = 800;
 
 int numKeys = 0;
 bool keys[4];
 
-float	xspeed;						// Base X Speed (To Allow Keyboard Direction Of Tail)
-float	yspeed;						// Base Y Speed (To Allow Keyboard Direction Of Tail)
-float	zoom = -40.0f;				// Used To Zoom Out
+float	xspeed;				// Base X Speed (To Allow Keyboard Direction Of Tail)
+float	yspeed;				// Base Y Speed (To Allow Keyboard Direction Of Tail)
+float	zoom = -40.0f;		// Used To Zoom Out
 
-GLuint	loop;						// Misc Loop Variable
-GLuint	texture[1];					// Storage For Our Particle Texture
+GLuint	loop;				// Misc Loop Variable
 
-static GLfloat white[3] = { 1.0f,1.0f,1.0f };
-static GLfloat blue[3] = { 0.0f,0.0f,1.0f };
-static GLfloat yellow[3] = { 1.0f,1.0f,0.0f };
-static GLfloat orange[3] = { 1.0f,0.5f,0.0f };
-static GLfloat red[3] = { 1.0f,0.1f,0.0f };
+// Model-view and projection matrices and ShadingType uniform location
+GLuint  ModelView, Projection, TextureType;
+
+//----------------------------------------------------------------------------
+
+/*
+*	RGBA COLORS
+*/
+
+// Total of 12 colors
+color4 vertex_colors[12] =
+{
+	color4(0.0, 0.0, 0.0, 1.0),			// Black
+	color4(0.54, 0.27, 0.07, 1.0),		// Brown
+	color4(0.29, 0.0, 0.51, 1.0),		// Purple
+	color4(1.0, 0.078, 0.57, 1.0),		// Pink
+	color4(0.0, 0.0, 1.0, 1.0),			// Blue
+	color4(0.0, 1.0, 0.0, 1.0),			// Green
+	color4(1.0, 1.0, 0.0, 1.0),			// Yellow
+	color4(1.0, 0.55, 0.0, 1.0),		// Orange
+	color4(1.0, 0.0, 0.0, 1.0),			// Red
+	color4(1.0, 1.0, 1.0, 1.0),			// White
+	color4(1.0, 0.0, 1.0, 1.0),			// Magenta
+	color4(0.0, 1.0, 1.0, 1.0)			// Cyan
+};
+
+//----------------------------------------------------------------------------
+/*
+*	PARTICLE EFFECTS
+*/
 
 float posX = 0.0f;
 float posY = -5.0f;
@@ -64,37 +120,115 @@ particles;							// Particles Structure
 
 particles particle[MAX_PARTICLES];	// Particle Array (Room For Particle Info)
 
-int LoadGLTextures()									// Load Bitmap And Convert To A Texture
+//----------------------------------------------------------------------------
+
+/*
+*	INITIALIZE
+*/
+
+void init()
 {
-	int Status = FALSE;								// Status Indicator
-	// AUX_RGBImageRec* TextureImage[1];				// Create Storage Space For The Textures
-	memset(TextureImage, 0, sizeof(void*) * 1);		// Set The Pointer To NULL
 
-	if (TextureImage[0] = LoadBMP("Data/Particle.bmp"))	// Load Particle Texture -> LOADBMP HATA VERIYOR
-	{
-		Status = TRUE;								// Set The Status To TRUE
-		glGenTextures(1, &texture[0]);				// Create One Texture
+	// Print out OpenGL version
+	cout << "OpenGL version: " << glGetString(GL_VERSION) << endl;
 
-		glBindTexture(GL_TEXTURE_2D, texture[0]);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		glTexImage2D(GL_TEXTURE_2D, 0, 3, TextureImage[0]->sizeX, TextureImage[0]->sizeY, 0, GL_RGB, GL_UNSIGNED_BYTE, TextureImage[0]->data);
-	}
+	// TODO: Create quad
 
-	if (TextureImage[0])							// If Texture Exists
-	{
-		if (TextureImage[0]->data)					// If Texture Image Exists
-		{
-			free(TextureImage[0]->data);			// Free The Texture Image Memory
-		}
-		free(TextureImage[0]);						// Free The Image Structure
-	}
-	return Status;									// Return The Status
+	// Create a vertex array object
+	GLuint vao;
+	glGenVertexArrays(1, &vao);
+	glBindVertexArray(vao);
+
+	// Create and initialize a buffer object
+	GLuint buffer;
+	glGenBuffers(1, &buffer);
+	glBindBuffer(GL_ARRAY_BUFFER, buffer);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(points) + sizeof(normals) + sizeof(texture_coordinates), NULL, GL_STATIC_DRAW);
+
+	// Specify an offset to keep track of where we're placing data in our
+	// vertex array buffer.  We'll use the same technique when we
+	// associate the offsets with vertex attribute pointers.
+	GLintptr offset = 0;
+	glBufferSubData(GL_ARRAY_BUFFER, offset, sizeof(points), points);
+	offset += sizeof(points);
+
+	glBufferSubData(GL_ARRAY_BUFFER, offset, sizeof(normals), normals);
+	offset += sizeof(normals);
+
+	glBufferSubData(GL_ARRAY_BUFFER, offset, sizeof(texture_coordinates), texture_coordinates);
+
+	// Initialize texture object
+	glGenTextures(2, textures);
+
+	// Fire
+	// TODO: Read bitmap file
+	glBindTexture(GL_TEXTURE_2D, textures[0]);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, fireParticleWidth, fireParticleHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, image);
+	glGenerateMipmap(GL_TEXTURE_2D);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+
+	// Smoke
+	// TODO: Read bitmap file
+	glBindTexture(GL_TEXTURE_2D, textures[1]);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, smokeParticleWidth, smokeParticleHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, image);
+	glGenerateMipmap(GL_TEXTURE_2D);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+
+	// Using InitShader to setup shader files
+	GLuint shaderProgram = InitShader("vshader.glsl", "fshader.glsl");
+	glUseProgram(shaderProgram);
+
+	/*
+	*	Set up vertex arrays
+	*/
+	offset = 0;
+	// vPosition
+	GLuint vPosition = glGetAttribLocation(shaderProgram, "vPosition");
+	glEnableVertexAttribArray(vPosition);
+	glVertexAttribPointer(vPosition, 4, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(offset));
+	offset += sizeof(points);
+
+	// vNormal
+	GLuint vNormal = glGetAttribLocation(shaderProgram, "vNormal");
+	glEnableVertexAttribArray(vNormal);
+	glVertexAttribPointer(vNormal, 3, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(offset));
+	offset += sizeof(normals);
+
+	// vCoords
+	GLuint vTexCoord = glGetAttribLocation(shaderProgram, "vTexCoord");
+	glEnableVertexAttribArray(vTexCoord);
+	glVertexAttribPointer(vTexCoord, 2, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(offset));
+
+	// Retrieve transformation uniform variable locations
+	ModelView = glGetUniformLocation(shaderProgram, "ModelView");
+	Projection = glGetUniformLocation(shaderProgram, "Projection");
+	TextureType = glGetUniformLocation(shaderProgram, "TextureType");
+
+	// Set the textureType value to 0 (default is phong shading)
+	glUniform1i(TextureType, textureType);
+
+	glEnable(GL_DEPTH_TEST);
+
+	// Enable culling
+	glEnable(GL_CULL_FACE);
+
+	// White background
+	glClearColor(1.0, 1.0, 1.0, 1.0);
 }
 
-void InitGL()										// All Setup For OpenGL Goes Here
+//----------------------------------------------------------------------------
+/*
+*	DISPLAY FUNCTION
+*/
+
+void display()
 {
-	LoadGLTextures();								// Jump To Texture Loading Routine
 
 	glShadeModel(GL_SMOOTH);							// Enable Smooth Shading
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);					// Black Background
@@ -107,16 +241,16 @@ void InitGL()										// All Setup For OpenGL Goes Here
 	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);	// Really Nice Perspective Calculations
 	glHint(GL_POINT_SMOOTH_HINT, GL_NICEST);				// Really Nice Point Smoothing
 	glEnable(GL_TEXTURE_2D);							// Enable Texture Mapping
-	glBindTexture(GL_TEXTURE_2D, texture[0]);			// Select Our Texture
+	glBindTexture(GL_TEXTURE_2D, textures[0]);			// Select Our Texture
 
 	for (loop = 0;loop < MAX_PARTICLES;loop++)				// Initials All The Textures
 	{
 		particle[loop].active = true;								// Make All The Particles Active
 		particle[loop].life = 1.0f;								// Give All The Particles Full Life
 		particle[loop].fade = float(rand() % 100) / 1000.0f + 0.003f;	// Random Fade Speed
-		particle[loop].r = white[0];
-		particle[loop].g = white[1];
-		particle[loop].b = white[2];
+		particle[loop].r = vertex_colors[9][0];
+		particle[loop].g = vertex_colors[9][1];
+		particle[loop].b = vertex_colors[9][2];
 		particle[loop].xi = float((rand() % 50) - 25.0f) * 10.0f;		// Random Speed On X Axis
 		particle[loop].yi = float((rand() % 50) - 25.0f) * 10.0f;		// Random Speed On Y Axis
 		particle[loop].zi = float((rand() % 50) - 25.0f) * 10.0f;		// Random Speed On Z Axis
@@ -126,37 +260,52 @@ void InitGL()										// All Setup For OpenGL Goes Here
 	}
 }
 
-// Set Light
-void SetLight()
+//// Set Light
+//void SetLight()
+//{
+//	float direction[] = { 0.0f, 0.0f, 1.0f, 0.0f };
+//	float diffintensity[] = { 0.7f, 0.7f, 0.7f, 1.0f };
+//	float ambient[] = { 0.2f, 0.2f, 0.2f, 1.0f };
+//
+//	glLightfv(GL_LIGHT0, GL_POSITION, direction);
+//	glLightfv(GL_LIGHT0, GL_DIFFUSE, diffintensity);
+//	glLightfv(GL_LIGHT0, GL_AMBIENT, ambient);
+//
+//
+//	glEnable(GL_LIGHT0);
+//}
+
+//----------------------------------------------------------------------------
+
+/*
+*	RESHAPE FUNCTION
+*/
+
+void reshape(int width, int height)
 {
-	float direction[] = { 0.0f, 0.0f, 1.0f, 0.0f };
-	float diffintensity[] = { 0.7f, 0.7f, 0.7f, 1.0f };
-	float ambient[] = { 0.2f, 0.2f, 0.2f, 1.0f };
+	glViewport(0, 0, width, height);
 
-	glLightfv(GL_LIGHT0, GL_POSITION, direction);
-	glLightfv(GL_LIGHT0, GL_DIFFUSE, diffintensity);
-	glLightfv(GL_LIGHT0, GL_AMBIENT, ambient);
+	GLfloat aspect = GLfloat(width) / height;
+	mat4  projection = Perspective(45.0, aspect, 0.5, 6.0);
 
-
-	glEnable(GL_LIGHT0);
-}
-
-void reshape() {
+	glUniformMatrix4fv(Projection, 1, GL_TRUE, projection);
 
 }
 
-// Set Camera Position
-void SetCamera()
-{
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	// gluPerspective(G308_FOVY, (double)g_nWinWidth / (double)g_nWinHeight, G308_ZNEAR_3D, G308_ZFAR_3D);
-	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
+//----------------------------------------------------------------------------
 
-	gluLookAt(camX, camY, camZ, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
-
-}
+//// Set Camera Position
+//void SetCamera()
+//{
+//	glMatrixMode(GL_PROJECTION);
+//	glLoadIdentity();
+//	// gluPerspective(G308_FOVY, (double)g_nWinWidth / (double)g_nWinHeight, G308_ZNEAR_3D, G308_ZFAR_3D);
+//	glMatrixMode(GL_MODELVIEW);
+//	glLoadIdentity();
+//
+//	gluLookAt(camX, camY, camZ, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
+//
+//}
 
 void DrawGLScene()										// Here's Where We Do All The Drawing
 {
@@ -210,33 +359,33 @@ void DrawGLScene()										// Here's Where We Do All The Drawing
 				particle[loop].xi = xspeed + float((rand() % 60) - 30.0f);	// X Axis Speed And Direction
 				particle[loop].yi = yspeed + float((rand() % 60) - 30.0f);	// Y Axis Speed And Direction
 				particle[loop].zi = float((rand() % 60) - 30.0f);	// Z Axis Speed And Direction
-				particle[loop].r = white[0];
-				particle[loop].g = white[1];
-				particle[loop].b = white[2];
+				particle[loop].r = vertex_colors[9][0];		// White color
+				particle[loop].g = vertex_colors[9][1];
+				particle[loop].b = vertex_colors[9][2];
 			}
 			else if (particle[loop].life < 0.4f)
 			{
-				particle[loop].r = red[0];
-				particle[loop].g = red[1];
-				particle[loop].b = red[2];
+				particle[loop].r = vertex_colors[8][0];		// Red color
+				particle[loop].g = vertex_colors[8][1];
+				particle[loop].b = vertex_colors[8][2];
 			}
 			else if (particle[loop].life < 0.6f)
 			{
-				particle[loop].r = orange[0];
-				particle[loop].g = orange[1];
-				particle[loop].b = orange[2];
+				particle[loop].r = vertex_colors[7][0];		// Orange color
+				particle[loop].g = vertex_colors[7][1];
+				particle[loop].b = vertex_colors[7][2];
 			}
 			else if (particle[loop].life < 0.75f)
 			{
-				particle[loop].r = yellow[0];
-				particle[loop].g = yellow[1];
-				particle[loop].b = yellow[2];
+				particle[loop].r = vertex_colors[6][0];		// Yellow color
+				particle[loop].g = vertex_colors[6][1];
+				particle[loop].b = vertex_colors[6][2];
 			}
 			else if (particle[loop].life < 0.85f)
 			{
-				particle[loop].r = blue[0];
-				particle[loop].g = blue[1];
-				particle[loop].b = blue[2];
+				particle[loop].r = vertex_colors[4][0];		// Blue color
+				particle[loop].g = vertex_colors[4][1];
+				particle[loop].b = vertex_colors[4][2];
 			}
 		}
 	}
@@ -249,16 +398,16 @@ int main(int argc, char** argv)
 {
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
-	glutInitWindowSize(800, 600);
+	glutInitWindowSize(WINDOW_WIDTH, WINDOW_HEIGHT);
 	g_mainWnd = glutCreateWindow("Fire & Smoke Particles");
 
 	glutDisplayFunc(DrawGLScene);
 	// glutReshapeFunc(reshape);
 
-	InitGL();
+	init();
 
-	SetLight();
-	SetCamera();
+	// SetLight();
+	// SetCamera();
 
 	glutMainLoop();
 
